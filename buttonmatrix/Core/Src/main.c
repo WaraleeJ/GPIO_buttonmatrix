@@ -270,7 +270,7 @@ void ButtonMatrixRead(){
 //		HAL_GPIO_ReadPin(R1_GPIO_Port, R1_Pin); //ทำ�?บบนี้ไปเรื่อยๆ�?็ได้
 
 		for(int i=0; i<4; i++){
-			if(HAL_GPIO_ReadPin(ButtonMatrixPortR[i], ButtonMatrixPinR[i] == GPIO_PIN_RESET)){ //ปุ่มถูกกด
+			if(HAL_GPIO_ReadPin(ButtonMatrixPortR[i], ButtonMatrixPinR[i]) == GPIO_PIN_RESET){ //ปุ่มถูกกด
 				//set bit i to 1
 				//i calculate form i(R) and CurrentL to set bit that relate to 4x4 button
 				Buttonstate |= 1 << (i + (CurrentL * 4));
