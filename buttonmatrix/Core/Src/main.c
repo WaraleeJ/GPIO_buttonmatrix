@@ -42,7 +42,7 @@
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-uint16_t Buttonstate = 0; //store 4x4 button state ให้เป็นgolbalเพื่อให้อ่านค่าแบบrealtimeได้
+uint16_t Buttonstate = 0; //store 4x4 button state ให้เป็นgolbalเพื่อให้อ่านค่า�?บบrealtimeได้
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -95,7 +95,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-   //function read button
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
 	  ButtonMatrixRead();
   }
   /* USER CODE END 3 */
@@ -251,31 +253,31 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-GPIO_TypeDef* ButtonMatrixPortR[4] = {R1_GPIO_Port, R2_GPIO_Port, R3_GPIO_Port, R4_GPIO_Port};
-uint16_t ButtonMatrixPinR[4] = {R1_Pin, R2_Pin, R3_Pin, R4_Pin};
+GPIO_TypeDef* ButtonMatrixPortR[4] = {GPIOA, GPIOB, GPIOB, GPIOB};
+uint16_t ButtonMatrixPinR[4] = {GPIO_PIN_10, GPIO_PIN_3, GPIO_PIN_5, GPIO_PIN_4};
 
-GPIO_TypeDef* ButtonMatrixPortL[4] = {L1_GPIO_Port, L2_GPIO_Port, L3_GPIO_Port, L4_GPIO_Port};
-uint16_t ButtonMatrixPinL[4] = {L1_Pin, L2_Pin, L3_Pin, L4_Pin};
+GPIO_TypeDef* ButtonMatrixPortL[4] = {GPIOA, GPIOC, GPIOB, GPIOA};
+uint16_t ButtonMatrixPinL[4] = {GPIO_PIN_9, GPIO_PIN_7, GPIO_PIN_6, GPIO_PIN_7};
 
 void ButtonMatrixRead(){
 	static uint32_t timestamp=0;
 	static uint8_t CurrentL=0;
 
-	if(HAL_GetTick() - timestamp >= 100){  //อ่านค่าทุกๆ 100 ms
+	if(HAL_GetTick() - timestamp >= 100){  //อ่านค่าทุ�?ๆ 100 ms
 
 		timestamp = HAL_GetTick();
 
-//		HAL_GPIO_ReadPin(R1_GPIO_Port, R1_Pin); //ทำแบบนี้ไปเรื่อยๆก็ได้
+//		HAL_GPIO_ReadPin(R1_GPIO_Port, R1_Pin); //ทำ�?บบนี้ไปเรื่อยๆ�?็ได้
 
-		for(int i=0; i<4; i++){
-			if(HAL_GPIO_ReadPin(ButtonMatrixPortR[i], ButtonMatrixPinR[i] == GPIO_PIN_RESET)){ //ปุ่มถูกกด
+		for(int i=0; i<4; i+=1){
+			if(HAL_GPIO_ReadPin(ButtonMatrixPortR[i], ButtonMatrixPinR[i] == GPIO_PIN_RESET)){ //ปุ่มถู�?�?ด
 				//set bit i to 1
 				//i calculate form i(R) and CurrentL to set bit that relate to 4x4 button
-				Buttonstate |= 1 << (i + (CurrentL * 4));
+				Buttonstate |= (uint16_t)1 << (i + (CurrentL * 4));
 
 			}
-			else{ //ไม่ได้กดปุ่ม
-				Buttonstate &= ~(1 << (i + (CurrentL * 4)));
+			else{ //ไม่ได้�?ดปุ่ม
+				Buttonstate &= ~((uint16_t)1 << (i + (CurrentL * 4)));
 
 			}
 		}
@@ -287,7 +289,6 @@ void ButtonMatrixRead(){
 		CurrentL = nextL;
 	}
 }
-
 /* USER CODE END 4 */
 
 /**
